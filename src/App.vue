@@ -1,19 +1,52 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <h1>Pictures</h1>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
 
 export default {
-  name: 'app',
+  name: "app",
   components: {
-    HelloWorld
+
+  },
+  data() {
+    return {
+      pictures: [],
+      error: ""
+    };
+  },
+  mounted() {
+    this.getPictures();
+  },
+  methods: {
+    async getPictures() {
+      try {
+        const response = await fetch(
+          "https://api.harvardartmuseums.org/object?classification=Prints&q=totalpageviews:1&apikey=a9cbeb10-fe90-11e9-b607-3f3e8e4ed76b"
+        );
+        const data = await response.json();
+        this.cleanData(data);
+      } catch (error) {
+        this.error = { error };
+      }
+    },
+    cleanData(data) {
+      this.pictures = data.records.map(picture => {
+        return {
+          artist: picture.people[0].alphasort,
+          url: picture.primaryimageurl,
+          id: picture.id,
+          date: picture.dated,
+          culture: picture.culture,
+          title: picture.title,
+          technique: picture.technique
+        };
+      });
+    }
   }
-}
+};
 </script>
 
 <style>
