@@ -30,7 +30,7 @@ export default {
     async getPictures() {
       try {
         const response = await fetch(
-          `https://api.harvardartmuseums.org/object?classification=Prints&q=totalpageviews:1&apikey=${process.env.local.VUE_APP_APIKEY}`
+          `https://api.harvardartmuseums.org/object?classification=Prints&q=totalpageviews:1&apikey=${VUE_APP_APIKEY}`
         );
         const data = await response.json();
         this.cleanData(data);
