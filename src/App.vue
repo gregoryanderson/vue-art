@@ -3,7 +3,7 @@
     <h1>Pictures</h1>
     <button v-if="this.prev" @click="getPrevPictures()">Previous</button>
     <button @click="getNextPictures()">Next</button>
-    <pictures :pictures="pictures"/>
+    <pictures :pictures="pictures" />
   </div>
 </template>
 
@@ -30,7 +30,7 @@ export default {
     async getPictures() {
       try {
         const response = await fetch(
-          `https://api.harvardartmuseums.org/object?classification=Prints&q=totalpageviews:1&apikey=${VUE_APP_APIKEY}`
+          `https://api.harvardartmuseums.org/object?classification=Prints&q=totalpageviews:1&apikey=${process.env.VUE_APP_APIKEY}`
         );
         const data = await response.json();
         this.cleanData(data);
@@ -59,8 +59,8 @@ export default {
       }
     },
     cleanData(data) {
-      this.next = data.info.next
-      this.prev = data.info.prev
+      this.next = data.info.next;
+      this.prev = data.info.prev;
       this.pictures = data.records.map(picture => {
         return {
           artist: picture.people[0].alphasort,
